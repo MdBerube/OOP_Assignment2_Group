@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  *
- * @author chamd
+ * @author Chamali Gorakanage
  */
 public class PersonLogicTest {
     
