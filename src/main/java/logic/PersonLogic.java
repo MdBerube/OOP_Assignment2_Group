@@ -12,7 +12,7 @@ import java.util.function.ObjIntConsumer;
 
 /**
  *
- * @author chamd
+ * @author Chamali Gorakanage
  */
 public class PersonLogic extends GenericLogic<Person, PersonDAL>  {
     
