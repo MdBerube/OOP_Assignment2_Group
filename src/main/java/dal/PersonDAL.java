@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 /**
  *
- * @author chamd
+ * @author Chamali Gorakanage
  */
 public class PersonDAL extends GenericDAL<Person>{
     public PersonDAL() {
