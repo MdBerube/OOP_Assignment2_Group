@@ -17,7 +17,7 @@ import logic.PersonLogic;
 
 /**
  *
- * @author Shariar (Shawn) Emami
+ * @author Chamali Gorakanage
  */
 @WebServlet( name = "CreatePerson", urlPatterns = { "/CreatePerson" } )
 public class CreatePerson extends HttpServlet {
