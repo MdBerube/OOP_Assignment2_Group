@@ -3,6 +3,7 @@ package logic;
 import common.ValidationException;
 import dal.BloodBankDAL;
 import entity.BloodBank;
+import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -15,14 +16,14 @@ import java.util.Date;
  * @author Mike Berube
  */
 public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
-    
-    // should be constants?
-    public static final String OWNER_ID = "owner_id";
+   
+    // column names same as id and HTML element names 
+    public static final String ID = "id";
+    public static final String NAME = "name";
     public static final String PRIVATELY_OWNED = "privately_owned";
     public static final String ESTABLISHED = "established";
-    public static final String NAME = "name";
+    public static final String OWNER_ID = "owner_id";
     public static final String EMPLOYEE_COUNT = "employee_count";
-    public static final String ID = "id";
     
     BloodBankLogic(){
         super( new BloodBankDAL() );
@@ -56,10 +57,12 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
     
     @Override
     public BloodBank createEntity(Map<String, String[]> parameterMap){
+        // no logic classes in this method
         
         Objects.requireNonNull( parameterMap, "parameterMap cannot be null");
         BloodBank entity = new BloodBank();
         
+        // generates ID value
         if( parameterMap.containsKey(ID) ){
             try{
                 entity.setId( Integer.parseInt( parameterMap.get( ID ) [ 0 ] ) );
@@ -67,25 +70,38 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
                 throw new ValidationException( ex );      
             }
         }
+            // extract data from the map first
+            // everything in map is string so must be converted
+            int ownerId = Integer.parseInt(parameterMap.get( OWNER_ID )[0]);
+            int privatelyOwned = Integer.parseInt(parameterMap.get( PRIVATELY_OWNED )[0]);
             
-            ObjIntConsumer< String > validator = ( value, length ) -> {
-                if ( value == null || value.trim().isEmpty() || value.length() > length ) {
-                    String error = "";
-                    if( value == null || value.trim().isEmpty() ){
-                        error = "value cannot be null or empty: " + value;
-                    }
-                    if( value.length() > length ){
-                        error = "string length is " + value.length() + " > " + length;
-                    }
-                    throw new ValidationException( error );
-                }
-            };
-            
-            String displayname = null;
-            if( parameterMap.containsKey(this) ){
-                displayname = parameterMap.get( )[ 0 ];
-                validator.accept( displayname, 45 );
-            }
+            // converts string to date using super class method convertStringToDate
+            // should use current date if convert failed....
+            Date established = convertStringToDate(parameterMap.get( ESTABLISHED )[0]);
+            String bankName = parameterMap.get( NAME )[0];
+            int employeeCount = Integer.parseInt(parameterMap.get(EMPLOYEE_COUNT)[0] );
+   
+           
+           // validate data
+           validateInt().accept( ownerId, 45);
+           validateBoolean().accept( privatelyOwned, 1);
+           
+           
+           validateDate().accept( established, 45);
+           validateString().accept( bankName, 100);
+           validateInt().accept( employeeCount, 45);
+           
+           // string to person?
+           entity.setOwner( ownerId );
+           
+           entity.setPrivatelyOwned( convertInt(privatelyOwned) );
+           entity.setEstablished( established );
+           entity.setName( bankName );
+           // string to int
+           entity.setEmplyeeCount( employeeCount );
+                   
+                   
+                   
         return entity;
     }
       
@@ -102,6 +118,77 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
     @Override
     public List<String> getColumnCodes() {
         return Arrays.asList(OWNER_ID, PRIVATELY_OWNED, ESTABLISHED, NAME, EMPLOYEE_COUNT, ID ); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    // checks string for correct length and empty spaces/null
+    public ObjIntConsumer<String> validateString( ) {
+        
+            ObjIntConsumer<String> validator = (value,length) -> {
+            if( value == null || value.trim().isEmpty() || value.length() > length ){
+                String error = "";
+                if( value == null || value.trim().isEmpty() ){
+                    error = "value cannot be null or empty: " + value;
+                }
+                if( value.length() > length ){
+                    error = "string length is " + value.length() + " > " + length;
+                }
+                throw new ValidationException( error );
+                }
+            };
+
+      return validator;
+    }
+    
+    // use regex?
+    public ObjIntConsumer<Integer> validateInt() {
+        ObjIntConsumer<Integer> validator = (value, length) -> {
+            // logic here
+            if(value == null  ){
+                String error = "";
+            if(value == null || ){
+                error = "";
+            }
+              if () {  
+                }
+                throw new ValidationException( error );
+            }
+        }; // lambda end
+                return validator;
+    }
+    
+    // might need to check for spacing issues in converting from string to int earlier on
+    public ObjIntConsumer<Integer> validateBoolean() {
+        ObjIntConsumer<Integer> validator = (value, length) -> {
+            // logic here
+            if (value == null ){
+                 String error = "validateBoolean: value cannot be null";
+                if(value != 1 || value != 0){
+                error = "validateBoolean: value must be 1 or 0";
+                }
+                throw new ValidationException( error );
+            }
+        };
+                return validator;
+    }
+    
+    // checks date for correct formatting?
+    public ObjIntConsumer<Date> validateDate() {
+        ObjIntConsumer<Date> validator = (value, length) -> {
+            // logic here
+            
+        };
+                return validator;
+    }
+    
+    // converts bit(int) to boolean
+    public boolean convertInt(int value) {
+        boolean i = false;
+        if (value  == 1) {
+               i = true;
+           } else {
+               i = false;
+           }
+        return i;
     }
     
 }
