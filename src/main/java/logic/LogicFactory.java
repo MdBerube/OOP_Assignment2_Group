@@ -7,7 +7,7 @@ public abstract class LogicFactory {
 
     private LogicFactory() {
     }
-
+     // HELP ME!
     //TODO this code is not complete, it is just here for sake of programe working. need to be changed ocmpletely
     public static < T> T getFor( String entityName ) {
         //this casting wont be needed.
