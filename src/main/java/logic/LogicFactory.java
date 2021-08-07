@@ -10,7 +10,7 @@ public abstract class LogicFactory {
         
     }
 
-    //TODO this code is not complete, it is just here for sake of programe working. need to be changed ocmpletely
+    //TODO this code is not complete, it is just here for sake of program working. need to be changed completely
     public static < T> T getFor( String entityName ) {
         //this casting wont be needed.
         return (T)new AccountLogic();

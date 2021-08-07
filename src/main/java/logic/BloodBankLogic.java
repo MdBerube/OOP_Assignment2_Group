@@ -82,7 +82,7 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
             int employeeCount = Integer.parseInt(parameterMap.get(EMPLOYEE_COUNT)[0] );
    
            
-           // validate data
+           // validate data then set in entity
            validateInt().accept( ownerId, 45);
            validateBoolean().accept( privatelyOwned, 1);
            

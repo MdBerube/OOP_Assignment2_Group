@@ -18,6 +18,11 @@ import logic.LogicFactory;
  *
  * @author Mike Berube
  */
+//  Servlets are classes which extend from HttpServlet. Each servlet has the following
+// @WebServlet which hold the name and URL pattern of servlet. 
+//  It extends from abstract class HttpServlet
+// doGet method which is called on HTTP GET request
+// doPost method which is called on HTTP POST requests
 @WebServlet( name = "BloodBankTable", urlPatterns = {"/BloodBankTable"})
 public class BloodBankTableView extends HttpServlet {
     
