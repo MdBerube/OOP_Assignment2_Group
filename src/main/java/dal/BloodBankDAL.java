@@ -10,29 +10,29 @@ import java.util.Date;
  *  BloodBank data access layer class extends genericDAL class
  * @author Mike Berube
  */
-public class BloodBankDAL extends GenericDAL {
+public class BloodBankDAL extends GenericDAL<BloodBank> {
     
     // constructor for object
     public BloodBankDAL(){
         super(BloodBank.class);
     }
     
+    @Override
     public List<BloodBank> findAll(){
          return findResults( "BloodBank.findAll", null );
     }
-    
-    // not sure if cast is correct here?
+   
     @Override
     public BloodBank findById(int bankId){
         Map<String, Object> map = new HashMap<>();
         map.put( "bank_id", bankId );
-        return (BloodBank) findResult("BloodBank.findByBankId", map );
+        return findResult("BloodBank.findByBankId", map );
     }
-    // not sure if cast is correct here?
+    
     public BloodBank findByName(String name) {
         Map<String, Object> map = new HashMap<>();
         map.put( "name", name);
-        return (BloodBank) findResult("BloodBank.findByName", map );
+        return  findResult("BloodBank.findByName", map );
     }
     
     public List<BloodBank> findByPrivatelyOwned(boolean privatelyOwned) {
@@ -52,11 +52,11 @@ public class BloodBankDAL extends GenericDAL {
         map.put( "emplyee_count", employeeCount);
         return findResults("BloodBank.findByEmplyeeCount", map );
     }
-    // not sure if cast should be here?
+    
     public BloodBank findByOwner(int ownerId) {
         Map<String, Object> map = new HashMap<>();
         map.put( "owner", ownerId);
-        return (BloodBank) findResult("BloodBank.findByOwner", map );
+        return findResult("BloodBank.findByOwner", map );
     }
     
     // bonus stuff 
