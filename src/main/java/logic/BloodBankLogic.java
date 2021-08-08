@@ -72,33 +72,28 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
         }
             // extract data from the map first
             // everything in map is string so must be converted
-            int ownerId = Integer.parseInt(parameterMap.get( OWNER_ID )[0]);
-            int privatelyOwned = Integer.parseInt(parameterMap.get( PRIVATELY_OWNED )[0]);
-            
-            // converts string to date using super class method convertStringToDate
-            // should use current date if convert failed....
-            Date established = convertStringToDate(parameterMap.get( ESTABLISHED )[0]);
+            String  ownerId = parameterMap.get( OWNER_ID )[0];
+            String privatelyOwned = parameterMap.get( PRIVATELY_OWNED )[0];
+            String established = parameterMap.get( ESTABLISHED )[0];
+            //Date established = convertStringToDate();
             String bankName = parameterMap.get( NAME )[0];
-            int employeeCount = Integer.parseInt(parameterMap.get(EMPLOYEE_COUNT)[0] );
+            String employeeCount = parameterMap.get(EMPLOYEE_COUNT)[0];
    
            
            // validate data then set in entity
-           validateInt().accept( ownerId, 45);
+           validateString().accept( ownerId, 45);
            validateBoolean().accept( privatelyOwned, 1);
-           
-           
-           validateDate().accept( established, 45);
+           validateString().accept( established, 45);
            validateString().accept( bankName, 100);
-           validateInt().accept( employeeCount, 45);
+           validateString().accept( employeeCount, 45);
            
            // string to person?
            entity.setOwner( ownerId );
-           
            entity.setPrivatelyOwned( convertInt(privatelyOwned) );
-           entity.setEstablished( established );
+           // still doesn't check if date is correct tho..
+           entity.setEstablished( convertStringToDate(established ));
            entity.setName( bankName );
-           // string to int
-           entity.setEmplyeeCount( employeeCount );
+           entity.setEmplyeeCount( Integer.parseInt(employeeCount) );
                    
                    
                    
@@ -139,12 +134,13 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
       return validator;
     }
     
+    /*
     // use regex?
     public ObjIntConsumer<Integer> validateInt() {
         ObjIntConsumer<Integer> validator = (value, length) -> {
             // logic here
             if(value == null  ){
-                String error = "";
+                String error = "ValidateInt: Int is null";
             if(value == null || ){
                 error = "";
             }
@@ -155,14 +151,15 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
         }; // lambda end
                 return validator;
     }
+*/
     
     // might need to check for spacing issues in converting from string to int earlier on
-    public ObjIntConsumer<Integer> validateBoolean() {
-        ObjIntConsumer<Integer> validator = (value, length) -> {
+    public ObjIntConsumer<String> validateBoolean() {
+        ObjIntConsumer<String> validator = (value, length) -> {
             // logic here
             if (value == null ){
                  String error = "validateBoolean: value cannot be null";
-                if(value != 1 || value != 0){
+                if(value != "1" || value != "0"){
                 error = "validateBoolean: value must be 1 or 0";
                 }
                 throw new ValidationException( error );
@@ -171,6 +168,7 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
                 return validator;
     }
     
+    /*
     // checks date for correct formatting?
     public ObjIntConsumer<Date> validateDate() {
         ObjIntConsumer<Date> validator = (value, length) -> {
@@ -179,11 +177,12 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
         };
                 return validator;
     }
+*/
     
     // converts bit(int) to boolean
-    public boolean convertInt(int value) {
+    public boolean convertInt(String value) {
         boolean i = false;
-        if (value  == 1) {
+        if (value  == "1") {
                i = true;
            } else {
                i = false;

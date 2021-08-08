@@ -38,24 +38,17 @@ public class BloodBankTableView extends HttpServlet {
             out.println( "<title>BloodBankViewNormal</title>" );
             out.println( "</head>" );
             out.println( "<body>" );
-
             out.println( "<table style=\"margin-left: auto; margin-right: auto;\" border=\"1\">" );
             out.println( "<caption>BloodBank</caption>" );
-            
-     Logic<BloodBank> logic = LogicFactory.getFor( "BloodBank" );
-     
-            
+            Logic<BloodBank> logic = LogicFactory.getFor( "BloodBank" );
             logic.getAll().forEach( e -> out.printf( "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
                     logic.extractDataAsList( e ).toArray() ) );
-            
              logic.getColumnNames().forEach( c -> out.printf( "<th>%s</th>", c ) );
-            
             out.println( "</tr>" );
             out.println( "</table>" );
             out.printf( "<div style=\"text-align: center;\"><pre>%s</pre></div>", toStringMap( request.getParameterMap() ) );
             out.println( "</body>" );
             out.println( "</html>" );
-     
         }
     }
     

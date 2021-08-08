@@ -14,28 +14,28 @@ public abstract class LogicFactory {
         
     }
     
-    public static < T> T getFor( String entityName ) throws ClassNotFoundException {
+    public static < T> T getFor( String entityName )  {
         
          T newInstance = null;
          Class<T> type;
            try {
                type = (Class<T>) Class.forName(PACKAGE + entityName + SUFFIX);
                newInstance = getFor(type);
-           }catch (Exception e){
+           }catch (ClassNotFoundException e){
                e.printStackTrace();
            }
            return newInstance; 
     }
     
-    public static<T> T getFor(Class type) throws InstantiationException , IllegalAccessException,  
-    IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    public static<T> T getFor(Class type)  {
         
         T newInstance = null;
         try{
             // getDeclared returns a constructor 
             Constructor<T> declaredConstructor = (type.getDeclaredConstructor());
             newInstance = declaredConstructor.newInstance();
-        }catch (Exception e ){
+        }catch (InstantiationException | IllegalAccessException | IllegalArgumentException 
+        | InvocationTargetException | NoSuchMethodException | SecurityException e ){
             e.printStackTrace();
         }
         return newInstance;
