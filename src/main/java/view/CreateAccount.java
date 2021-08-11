@@ -124,11 +124,16 @@ public class CreateAccount extends HttpServlet {
     protected void doPost( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
         log( "POST" );
+        // creates an accountlogic object through the factory class
         AccountLogic aLogic = LogicFactory.getFor( "Account" );
+        //  pulls username entered from the request
         String username = request.getParameter( AccountLogic.USERNAME );
+        // checks the db for a line with specific username and if it returns null then enter try
         if( aLogic.getAccountWithUsername( username ) == null ){
             try {
+                // creates a new account object via logic object using param map
                 Account account = aLogic.createEntity( request.getParameterMap() );
+                // adds account object to the db
                 aLogic.add( account );
             } catch( Exception ex ) {
                 errorMessage = ex.getMessage();

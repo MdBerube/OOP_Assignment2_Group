@@ -63,7 +63,7 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
         Objects.requireNonNull( parameterMap, "parameterMap cannot be null");
         BloodBank entity = new BloodBank();
         
-        // generates ID value
+        // generate/set bank id value
         if( parameterMap.containsKey(ID) ){
             try{
                 entity.setId( Integer.parseInt( parameterMap.get( ID ) [ 0 ] ) );
@@ -71,6 +71,7 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
                 throw new ValidationException( ex );      
             }
         }
+        
             // extract data from the map first
             // everything in map is string so must be converted
             String  ownerId = parameterMap.get( OWNER_ID )[0];
@@ -87,22 +88,8 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
            validateString().accept( established, 45);
            validateString().accept( bankName, 100);
            validateString().accept( employeeCount, 45);
-           
-           // string to person?
-           if (ownerId != null){
-                try{
-                   // not sure if it will work lol
-                   int find = Integer.parseInt(ownerId);
-                   // need an object passed from view or do we call a new factory from here to 
-                   // check if the ID exists?
-                   entity.setOwner(Person.getWithId(find));
-                   }catch( java.lang.NumberFormatException | NullPointerException ex){
-                    ex.printStackTrace();
-               }
-           }else {
-               entity.setOwner(null);
-           }
           
+           // 5/6 attributes set.
            entity.setPrivatelyOwned( convertInt(privatelyOwned) );
            // still doesn't check if date is correct tho..
            entity.setEstablished( convertStringToDate(established ));

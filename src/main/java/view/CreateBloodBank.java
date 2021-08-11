@@ -1,6 +1,7 @@
 package view;
 
 import entity.BloodBank;
+import entity.Person;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.BloodBankLogic;
 import logic.LogicFactory;
+import logic.PersonLogic;
 /**
  *
  * @author Mike Berube
@@ -98,14 +100,25 @@ public class CreateBloodBank extends HttpServlet {
     protected void doPost( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
         log( "POST" );
+        // creates a bloodbanklogic object through the logic factory
         BloodBankLogic bLogic = LogicFactory.getFor( "BloodBank" );
-        // why these checks?
+        // set submitted name as a variable 
         String name = request.getParameter( BloodBankLogic.NAME );
-        // need to set person dependancy in this part somewhere. should be able to 
-        // set it in 
+        // checks the db for a line with specific name and if it returns null then enter try 
+        // name must be unique therefore..
         if( bLogic.getBloodBankWithName( name ) == null ){
             try {
+                // attempts to create entity with provided information
                 BloodBank bloodbank = bLogic.createEntity( request.getParameterMap() );
+                if(request.getParameter(BloodBankLogic.OWNER_ID) != null) {
+                    PersonLogic pLogic = LogicFactory.getFor("Person");
+                    // might break here since owner may not exist already?
+                    Person owner = pLogic.getWithId(Integer.parseInt(BloodBankLogic.OWNER_ID));
+                    bloodbank.setOwner(owner);
+                }else{
+                    bloodbank.setOwner(null);
+                } 
+                // adds the bloodbank to the db
                 bLogic.add( bloodbank );
             } catch( Exception ex ) {
                 errorMessage = ex.getMessage();
