@@ -70,9 +70,11 @@ public class BloodBank implements Serializable {
     @OneToOne( fetch = FetchType.LAZY )
     private Person owner;
 
+    // blank constructor
     public BloodBank() {
     }
 
+    // bloodbank con with bankId
     public BloodBank( Integer bankId ) {
         this.bankId = bankId;
     }

@@ -3,6 +3,7 @@ package logic;
 import common.ValidationException;
 import dal.BloodBankDAL;
 import entity.BloodBank;
+import entity.Person;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -88,7 +89,20 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
            validateString().accept( employeeCount, 45);
            
            // string to person?
-           entity.setOwner( ownerId );
+           if (ownerId != null){
+                try{
+                   // not sure if it will work lol
+                   int find = Integer.parseInt(ownerId);
+                   // need an object passed from view or do we call a new factory from here to 
+                   // check if the ID exists?
+                   Person.equals(find);
+                   }catch( java.lang.NumberFormatException | NullPointerException ex){
+                    ex.printStackTrace();
+               }
+           }else {
+               entity.setOwner(null);
+           }
+          
            entity.setPrivatelyOwned( convertInt(privatelyOwned) );
            // still doesn't check if date is correct tho..
            entity.setEstablished( convertStringToDate(established ));

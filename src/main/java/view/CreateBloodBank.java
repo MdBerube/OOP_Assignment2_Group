@@ -101,6 +101,8 @@ public class CreateBloodBank extends HttpServlet {
         BloodBankLogic bLogic = LogicFactory.getFor( "BloodBank" );
         // why these checks?
         String name = request.getParameter( BloodBankLogic.NAME );
+        // need to set person dependancy in this part somewhere. should be able to 
+        // set it in 
         if( bLogic.getBloodBankWithName( name ) == null ){
             try {
                 BloodBank bloodbank = bLogic.createEntity( request.getParameterMap() );
