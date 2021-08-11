@@ -95,7 +95,7 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
                    int find = Integer.parseInt(ownerId);
                    // need an object passed from view or do we call a new factory from here to 
                    // check if the ID exists?
-                   Person.equals(find);
+                   entity.setOwner(Person.getWithId(find));
                    }catch( java.lang.NumberFormatException | NullPointerException ex){
                     ex.printStackTrace();
                }
