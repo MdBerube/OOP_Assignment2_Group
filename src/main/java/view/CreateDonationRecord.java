@@ -51,7 +51,7 @@ public class CreateDonationRecord extends HttpServlet{
             out.printf("<input type=\"name\" name=\"%s\" value=\"\"><br>", DonationRecordLogic.TESTED);
             out.println("<br>");
             out.println("Administrator:<br>");
-            out.printf("<input type=\"name\" name=\"%s\" value=\"\"><br>", DonationRecordLogic.ADMINSTRATOR);
+            out.printf("<input type=\"name\" name=\"%s\" value=\"\"><br>", DonationRecordLogic.ADMINISTRATOR);
             out.println("<br>");
             out.println("Hospital:<br>");
             out.printf("<input type=\"name\" name=\"%s\" value=\"\"><br>", DonationRecordLogic.HOSPITAL);
@@ -108,7 +108,7 @@ public class CreateDonationRecord extends HttpServlet{
             throws ServletException, IOException {
         log( "POST" );
         // creates an accountlogic object through the factory class
-        DonationRecordLogic dLogic = LogicFactory.getFor( "Doantion Record" );
+        DonationRecordLogic dLogic = LogicFactory.getFor( "Donation Record" );
         //  pulls username entered from the request
         String hospital = request.getParameter( DonationRecordLogic.HOSPITAL );
         // checks the db for a line with specific username and if it returns null then enter try

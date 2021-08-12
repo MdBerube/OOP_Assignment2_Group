@@ -1,13 +1,20 @@
 package dal;
 
+import entity.Account;
 import entity.DonationRecord;
+
+import javax.persistence.NamedQuery;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * @author Ngoc Que Huong Tran
+ */
 public class DonationRecordDAL extends GenericDAL<DonationRecord> {
-    DonationRecordDAL() {
+    public DonationRecordDAL() {
         super(DonationRecord.class);
     }
 
@@ -79,4 +86,3 @@ public class DonationRecordDAL extends GenericDAL<DonationRecord> {
     }
 
 }
-

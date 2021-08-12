@@ -1,13 +1,12 @@
 package logic;
 
 import common.ValidationException;
+import dal.AccountDAL;
 import dal.DonationRecordDAL;
+import entity.Account;
 import entity.DonationRecord;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+
+import java.util.*;
 import java.util.function.ObjIntConsumer;
 
 /**
@@ -15,29 +14,29 @@ import java.util.function.ObjIntConsumer;
  * @author Ngoc Que Huong Tran
  */
 public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRecordDAL> {
-    
+
     public static final String PERSON_ID = "person_id";
     public static final String DONATION_ID = "donation_id";
     public static final String TESTED = "tested";
-    public static final String ADMINSTRATOR = "adminstrator";
+    public static final String ADMINISTRATOR = "administrator";
     public static final String HOSPITAL = "hospital";
     public static final String CREATED = "created";
     public static final String ID = "id";
 
-    DonationRecordLogic(DonationRecordDAL dal) {
-        super(dal);
-    }
-    
-    @Override
-    public List<DonationRecord> getAll() {
-        return get(() -> dal().findAll());
+    DonationRecordLogic() {
+        super( new DonationRecordDAL() );
     }
 
     @Override
-    public DonationRecord getWithId(int id) {
-        return get(() -> dal().findById(id));
+    public List<DonationRecord> getAll() {
+        return get( () -> dal().findAll() );
     }
-    
+
+    @Override
+    public DonationRecord getWithId( int id ) {
+        return get( () -> dal().findById( id ) );
+    }
+
     public List<DonationRecord> getDonationRecordWithTested(boolean tested) {
         return get(() ->dal().findByTested(tested));
     }
@@ -60,74 +59,57 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
     public  List<DonationRecord> getDonationRecordsWithDonation(int donationId) {
         return get(() -> dal().findByDonation(donationId));
     } 
-    
+
     @Override
-    public DonationRecord createEntity( Map<String, String[]> parameterMap) {
-        Objects.requireNonNull( parameterMap, "parameterMap cannot be null");
+    public DonationRecord createEntity( Map<String, String[]> parameterMap ) {
+
+        Objects.requireNonNull( parameterMap, "parameterMap cannot be null" );
+
         DonationRecord entity = new DonationRecord();
-        
-        if (parameterMap.containsKey(ID)) {
+
+        //ID is generated, so if it exists add it to the entity object
+        //otherwise it does not matter as mysql will create an if for it.
+        //the only time that we will have id is for update behaviour.
+        if( parameterMap.containsKey( ID ) ){
             try {
-                entity.setId(Integer.parseInt(parameterMap.get(ID)[0]));
-            }
-            catch (java.lang.NumberFormatException ex) {
-                throw new ValidationException(ex);
+                entity.setId( Integer.parseInt( parameterMap.get( ID )[ 0 ] ) );
+            } catch( NumberFormatException ex ) {
+                throw new ValidationException( ex );
             }
         }
         
-        ObjIntConsumer< String> validator = ( value, length ) -> {
-            if( value == null || value.trim().isEmpty() || value.length() > length ){
-                String error = "";
-                if( value == null || value.trim().isEmpty() ){
-                    error = "value cannot be null or empty: " + value;
-                }
-                if( value.length() > length ){
-                    error = "string length is " + value.length() + " > " + length;
-                }
-                throw new ValidationException( error );
-            }
-        };
-        
-        String personId  = parameterMap.get(PERSON_ID)[0];
-        String donationId = parameterMap.get(DONATION_ID)[0];
-        String tested = parameterMap.get(TESTED)[0];
-        String adminstrator = parameterMap.get(ADMINSTRATOR)[0];
-        String hospital = parameterMap.get(HOSPITAL)[0];
-        String created = parameterMap.get(CREATED)[0];
-        String id = parameterMap.get(ID)[0];
-        
-        validator.accept(personId, 10);
-        validator.accept(donationId, 10);
-        validator.accept(tested, 1);
-        validator.accept(adminstrator, 100);
-        validator.accept(hospital, 100);
-        validator.accept(created, 19);
-        validator.accept(id, 10);
-        
-        entity.setPerson(personId);
-        entity.setBloodDonation(donationId);
-        entity.setTested(tested);
-        entity.setAdministrator(adminstrator);
+
+        Integer personId = Integer.valueOf( parameterMap.get( PERSON_ID )[ 0 ]);
+        Integer donationId = Integer.valueOf(parameterMap.get( DONATION_ID )[ 0 ]);
+        Boolean tested = Boolean.valueOf(parameterMap.get( TESTED )[ 0 ]);
+        String administrator = parameterMap.get( ADMINISTRATOR )[ 0 ];
+        String hospital = parameterMap.get( HOSPITAL )[ 0 ];
+
+        entity.setAdministrator(administrator);
+        entity.setId(donationId);
+        entity.setCreated(new Date());
         entity.setHospital(hospital);
-        entity.setCreated(created);
-        entity.setId(id);
+        entity.setTested(tested);
+        entity.setId(personId);
+        
+        
         
         return entity;
     }
-    
-    @Override
+
+
+   @Override
     public List<String> getColumnNames() {
-        return Arrays.asList("ID", "Person ID", "Donation ID", "Tested", "Adminstrator", "Hospital", "Create", "Record ID");
+        return Arrays.asList( "Record ID", "Person ID", "Donation ID", "Tested", "Adminstrator", "Hospital", "Create");
     }
 
     @Override
     public List<String> getColumnCodes() {
-        return Arrays.asList(PERSON_ID,DONATION_ID, TESTED, ADMINSTRATOR, HOSPITAL, CREATED, ID);
+        return Arrays.asList(ID,PERSON_ID,DONATION_ID, TESTED, ADMINISTRATOR, HOSPITAL, CREATED);
     }
 
     @Override
     public List<?> extractDataAsList(DonationRecord e) {
-        return Arrays.asList(e.getPerson(), e.getBloodDonation(), e.getTested(), e.getAdministrator(), e.getHospital(), e.getCreated(), e.getId());
+        return Arrays.asList( e.getId(), e.getPerson(), e.getBloodDonation(), e.getTested(), e.getAdministrator(), e.getHospital(), e.getCreated());
     }
-  
 }
