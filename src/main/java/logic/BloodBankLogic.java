@@ -13,7 +13,7 @@ import java.util.function.ObjIntConsumer;
 import java.util.Date;
 
 /**
- *
+ * this is a test. netbeans is crap!!
  * @author Mike Berube
  */
 public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
