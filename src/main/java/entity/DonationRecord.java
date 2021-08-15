@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Shariar
+ * @author Ngoc Que Huong Tran
  */
 @Entity
 @Table( name = "donation_record", catalog = "simplebloodbank", schema = "", uniqueConstraints = {
