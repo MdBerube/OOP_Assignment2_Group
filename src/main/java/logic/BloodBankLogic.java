@@ -74,7 +74,6 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
         
             // extract data from the map first
             // everything in map is string so must be converted
-            String  ownerId = parameterMap.get( OWNER_ID )[0];
             String privatelyOwned = parameterMap.get( PRIVATELY_OWNED )[0];
             String established = parameterMap.get( ESTABLISHED )[0];
             //Date established = convertStringToDate();
@@ -83,7 +82,6 @@ public class BloodBankLogic extends GenericLogic<BloodBank,BloodBankDAL>{
    
            
            // validate data then set in entity
-           validateString().accept( ownerId, 45);
            validateBoolean().accept( privatelyOwned, 1);
            validateString().accept( established, 45);
            validateString().accept( bankName, 100);
