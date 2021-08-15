@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Mohammad AbouHaibeh
+ * @author Mohammad AbouHaibeh
  */
 public class BloodDonationDAL extends GenericDAL<BloodDonation> {
 

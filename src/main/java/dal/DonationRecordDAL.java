@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * @author Ngoc Que Huong Tran
+ */
+
 public class DonationRecordDAL extends GenericDAL<DonationRecord> {
     DonationRecordDAL() {
         super(DonationRecord.class);
